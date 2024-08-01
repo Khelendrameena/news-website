@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search Suggestions</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    #search_bar {
+      margin-top: 20px;
+      text-align: center;
+    }
+    #search {
+      padding: 10px;
+      width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    #suggestions {
+      list-style-type: none;
+      padding: 0;
+      margin-left: 10%;
+      position: absolute;
+      width: 300px;
+      background-color: #FFFFFF;
+      border: 1px solid #ccc;
+      border-top: none;
+      border-radius: 0 0 5px 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+    }
+#suggestions li:nth-child(1) {
+  background-color: #7714A1; /* Background color for the second <li> element */
+}
+    #suggestions li {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #suggestions li:hover {
+      background-color: #933030;
+    }
+    #button{
+      height: 40px;
+      width: 40px;
+      background-color: #791E6F;
+      position: relative;
+      top: 12px; left: -5%;
+      border: 1px solid #1E3A79;
+      border-radius: 25%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="search_bar">
+    <form action="/search/quary">
+    <input type="text" name="quary" id="search" placeholder="Type something...">
+    <button type="submit" id="button"></button>
+    <ul id="suggestions"></ul>
+    </form>
+  </div>
+  <script>
+    const searchInput = document.getElementById('search');
+    const suggestionsList = document.getElementById('suggestions');
+
+    // Dummy suggestion data
+    data = {{ data | tojson }}
+    const suggestions = data
+     
+    // Function to show suggestions
+    function showSuggestions(input) {
+      suggestionsList.innerHTML = '';
+      suggestions.forEach(suggestion => {
+        if (suggestion.toLowerCase().includes(input.toLowerCase())) {
+          const li = document.createElement('li');
+          li.textContent = suggestion;
+          suggestionsList.appendChild(li);
+        }
+      });
+    }
+
+    // Event listener for input change
+    searchInput.addEventListener('input', () => {
+      const inputValue = searchInput.value.trim();
+      if (inputValue.length > 0) {
+        showSuggestions(inputValue);
+        suggestionsList.style.display = 'block';
+      } else {
+        suggestionsList.innerHTML = '';
+        suggestionsList.style.display = 'none';
+      }
+    });
+
+    // Event listener for suggestion click
+    suggestionsList.addEventListener('click', (e) => {
+      if (e.target.tagName === 'LI') {
+        searchInput.value = e.target.textContent;
+        suggestionsList.innerHTML = '';
+        suggestionsList.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+
+</html>

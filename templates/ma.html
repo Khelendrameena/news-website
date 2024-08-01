@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Random Number</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<form id="randomForm" method="post" action="/random_number">
+    <div id="randomDiv" style="width: 200px; height: 200px; background-color: lightblue; cursor: pointer;">
+        Click me!
+    </div>
+</form>
+
+<script>
+    $('#randomDiv').click(function() {
+        $('#randomForm').submit();
+    });
+
+    $('#randomForm').submit(function(e) {
+        e.preventDefault();
+        $.post('/random_number', function(data) {
+            if (data.number == 1) {
+                alert("Python backend aa gaya!");
+            } else {
+                alert("Touch not!");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+ <!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <style>
+    #input{
+      height: 12vh;
+      padding-left: 10%;
+    }
+    #coment_inp{
+      height#344858: 5vh;
+      wi#B3148Ddth: 40vh;
+      border: 2px solid #5A3F97;
+      border-radius: 12px;
+    }
+ body {
+   margin: 40px;
+ }
+ 
+ button {
+   cursor: pointer;
+   outline: 0;
+   color: #AAA;
+ 
+ }
+ 
+ .btn:focus {
+   outline: none;
+ }
+ .green {
+   color: green;
+ }
+ .red {
+   color: red;
+ }
+  </style>
+</head>
+<body>
+  <script src="https://use.fontawesome.com/fe459689b4.js"></script>
+
+<div id="input">
+ <form action="/coment" method="POST" style="display: flex;">
+  <input type="text" name="coment" id="coment_inp" placeholder="coment.." style="width: 60vh;">
+  <input type="hidden" name="coment_nu_id" id="coment_in" placeholder="coment.." style="width: 60vh;">
+  <button style="position: relative; left: -40px; border-radius: 20%;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAyklEQVR4nO3Ur0tDURiH8c+YYbJgsJq2bDS5uLo0rMZVo3XRJIj/gZhWF5cGw7SyIGK52SQMLDeMI8K5sCRe2cvKvvC0w/vA++NwSI0scY0jQUmZArc4iRJUrPGAsyhBRYkJLqIEaYsFBmhECVLmHTdoRQlS5gNjnP5FcI9nzPGGrxqin7eP6NZt2zE66OEqt+UOT5jhFZ9bog2m6EcLLvfSohQ95FSDFUYRa7qIOLQyD/X8P0X38tkVeR3buypc5QVDNHdd+BC/5RtAR51vWsMpkQAAAABJRU5ErkJggg=="></button>
+ </form>
+</div>
+<div id="main">
+</div>
+ <script>
+ var data = {{ data | tojson }}
+ for(let x in data){
+   var coment_1 = document.createElement("div")
+   var gap_1 = document.createElement("div")
+   gap_1.style.height = '10px'
+   coment_1.innerHTML = `<div style="display: flex; padding: 0px;"><p style="height 10%; width: 8%; border: 2px solid #B3148D; border-radius: 100%; margin-top: 10px; margin-left: 10px; padding-left: 1%;"><img src="" alt="" style="width: 5vh; border-radius: 100%; margin-top: 0px; margin-left: 0px;"></p><h4 style="margin-top: 20px; margin-left: 15px; color: #B3148D;">${data[x].name}</h4></div><br><p style="margin-top: -20px; margin-left: 20px; color: white">${data[x].coment}</p><div style="margin-left: 10px; margin-top: 10px;">
+     <button class="btn" id="green_${x}"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+  <button class="btn" id="red_${x}"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+  </div></div>`
+     coment_1.style.height = '20vh';
+     coment_1.style.backgroundColor = '#26323D';
+     coment_1.style.border = '2px solid black';
+     coment_1.style.borderRadius = '12px';
+     document.getElementById("main").append(coment_1)
+     document.getElementById("main").append(gap_1)
+          document.getElementById(`green_${x}`)
+.addEventListener('click', function() {
+  
+     if (document.getElementById(`red_${x}`)
+.classList.contains('red')) {
+         document.getElementById(`red_${x}`)
+.classList.remove('red');
+     }
+     this.classList.toggle('green');
+  
+     });
+  
+         document.getElementById(`red_${x}`)
+.addEventListener('click', function() {
+  
+     if (document.getElementById(`green_${x}`)
+.classList.contains('green')) {
+          document.getElementById(`green_${x}`)
+.classList.remove('green');
+     }
+     this.classList.toggle('red');
+     });
+}
+ </script>
+</div>
+</body>
+</html>

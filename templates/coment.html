@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <style>
+    #coment {
+      height: 5vh;
+      width: 30vh;
+      margin: 5%;
+      border: 2px solid #1121D6;
+      border-radius: 12px;
+    }
+    .but {
+      height: 5vh;
+      width: 10vh;
+      font-size: 18px;
+      color: #FFFFFF;
+      background-color: #1121D6;
+      border: 2px solid #9662EE;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="input">
+    <input type="text" id="coment" name="coment">
+    <button class="but" >submit</button>
+  </div>
+  <div id="coment_section" style="margin-top: 8%;">
+  <div id="coment_section_1"></div>
+  <div id="coment_section_2"></div>
+
+  </div>
+  
+  <script>
+ // वर्तमान तारीख और समय प्राप्त करना
+ var data = {{ data|tojson }}
+ 
+
+function xhr_1(data, path) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', path, true);
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+    xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            console.log('Success:', xhr.responseText);
+        } else {
+            console.error('Error:', xhr.statusText, xhr.responseText);
+        }
+    };
+
+    xhr.onerror = function () {
+        console.error('Request failed');
+    };
+
+    console.log('Sending data:', data); // Log data before sending
+    xhr.send(JSON.stringify(data));
+}
+document.querySelector(".but").addEventListener('click',(data)=>{
+var xhr = new XMLHttpRequest();
+
+// Configure it: POST-request for the URL
+xhr.open('POST', '/coment/insert', true);
+
+// Set up the request headers if needed
+xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+// Define what happens on successful data submission
+xhr.onload = function () {
+    if (xhr.status >= 200 && xhr.status < 300) {
+        console.log('Success:', xhr.responseText);
+    } else {
+        console.log('Error:', xhr.statusText);
+    }
+};
+
+// Define what happens in case of an error
+xhr.onerror = function () {
+    console.log('Request failed');
+};
+
+var data_1 = JSON.stringify({
+  "coment":document.getElementById("coment").value
+})
+// Convert the data to JSON and send it
+
+xhr.send(data_1);
+// Reload the page
+window.location.reload();
+
+//
+//
+      document.getElementById("coment").value = "";
+})      
+    // Creating comments
+    for (let x in data) {
+      var coment = document.createElement("div");
+      coment.id = "main";
+      coment.innerHTML = `
+        <div style="display: flex; flex-wrap: wrap;">
+          <img src="${data[x].img}" alt="" style="height:8vh; width: 8vh; border-radius:100%">
+          <h3 style="margin-left: 4%; color: blue;">${data[data.length-x-1][2]}</h3>
+          <p style="margin-top: 6%; margin-left: 2%">•</p>
+        </div>
+        <div style="margin: 5%;">
+          <p>${data[data.length-x-1][1]}</p>
+          <div style="display: flex;">
+            <img src="static/program/${data[data.length-x-1][3]}" alt="like" class="like" style="height: 3.8vh; margin-left: 5%;">
+            <p style="margin-left: 2.5%;" id="like_nu">${data[data.length-x-1][5]}</p>
+            <img src="static/program/${data[data.length-x-1][4]}" alt="dislike" class="dislike" style="height: 3.5vh; margin-left: 5%;">
+            <img src="  static/program/download.png" alt="reply" class="reply" style="height: 3.8vh; margin-left: 10%;">
+          </div>
+        </div>`;
+
+      document.getElementById("coment_section_2").append(coment);
+document.querySelectorAll('.like')[x].addEventListener('click',()=>{
+  if(document.querySelectorAll('.like')[x].src.includes('like.png')){
+  if(document.querySelectorAll('.dislike')[x].src.includes('dislike_1.png')){
+  document.querySelectorAll('.like')[x].src = 'static/program/like_1.png';
+  document.querySelectorAll('.dislike')[x].src = 'static/program/dislike.png';
+     data[x][5] = data[x][5]+1;
+   xhr_1([data[x][0],"like_1.png","dislike.png",data[x][5]],"/coment/like")
+document.getElementById("like_nu").innerText = data[x][5];
+  }
+  else{
+  document.querySelectorAll('.like')[x].src = 'static/program/like_1.png';
+  data[x][5] = data[x][5]+1;
+  xhr_1([data[x][0],"like_1.png","dislike.png",data[x][5]],"/coment/like")
+  document.getElementById("like_nu").innerText = data[x][5];
+  }
+  }
+  else{
+  document.querySelectorAll('.like')[x].src = 'static/program/like.png'
+   data[x][5] = data[x][5]-1;
+  xhr_1([data[x][0],"like.png","dislike.png",data[x][5]],"/coment/like")
+document.getElementById("like_nu").innerText = data[x][5];
+  }
+})
+document.querySelectorAll('.dislike')[x].addEventListener('click', () => {
+  if (document.querySelectorAll('.dislike')[x].src.includes('dislike.png')) {
+  if (document.querySelectorAll('.like')[x].src.includes('like_1.png')) {
+    document.querySelectorAll('.dislike')[x].src = 'static/program/dislike_1.png';
+    document.querySelectorAll('.like')[x].src = 'static/program/like.png';
+       data[x][5] = data[x][5]-1;
+  xhr_1([data[x][0],"like.png","dislike_1.png",data[x][5]],"/coment/like")
+  document.getElementById("like_nu").innerText = data[x][5];
+
+  }
+  else {
+    document.querySelectorAll('.dislike')[x].src = 'static/program/dislike_1.png';  
+  xhr_1([data[x][0],"like.png","dislike_1.png",data[x][5]],"/coment/like")
+document.getElementById("like_nu").innerText = data[x][5];
+  }
+  }
+  else {
+    document.querySelectorAll('.dislike')[x].src = 'static/program/dislike.png'
+  xhr_1([data[x][0],"like.png","dislike_1.png", data[x][5]],"/coment/like")
+
+  }
+})
+    }
+if(data.length == 0){
+  document.getElementById("coment_section").innerHTML = '<h1>No coment</h1>'
+}
+
+// Create a new XMLHttpRequest object
+  </script>
+</body>
+</html>
