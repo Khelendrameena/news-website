@@ -105,7 +105,7 @@ def index_3():
      response = requests.get(url)
      data_2 = response.json()
      for id in data_2["articles"]:
-     	id["views"] = sum([ i[2] for i in read_record("user.db","views") if id["publishedAt"] == i[1]])		 
+     	id["views"] = sum([i[2] if i[2] is not None else 0 for i in read_record("user.db", "views") if id["publishedAt"] == i[1]])	 
      return render_template('index.html',data=data_2["articles"])
      
 @app.route('/signup')
