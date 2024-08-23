@@ -41,7 +41,7 @@ def index_1():
 	 if username:
 	 	return redirect(f"/home/profile/{username}")
 	 for id in data["articles"]:
-	 		id["views"] = sum([ i[2] for i in read_record("user.db","views") if id["publishedAt"] == i[1]])		 			
+	 		id["views"] = sum([i[2] if i[2] is not None else 0 for i in read_record("user.db", "views") if id["publishedAt"] == i[1]])		 			
 	 time = datetime.now().year
 	 return render_template('index.html',data=data["articles"],time = time)
 
@@ -85,8 +85,8 @@ def index_2():
     for i in range(0,10):
     	data_1 = data["articles"][i]
     	sug_data.append(data_1["title"])
-    for id in data_2["articles"]:
-    	id["views"] = sum([ i[2] for i in read_record("user.db","views") if id["publishedAt"] == i[1]])		 
+   # for id in data_2["articles"]:
+    	#id["views"] = sum([ i[2] for i in read_record("user.db","views") if id["publishedAt"] == i[1]])		 
     return render_template('search.html',data=sug_data)
     
 @app.route('/view',methods=['POST'])
