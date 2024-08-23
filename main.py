@@ -7,6 +7,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for,se
 import smtplib
 from email.mime.multipart import MIMEMultipart
 import sqlite3
+import numpy as np
 
 # Connect to a database (will be created if it doesn't exist)
 
@@ -40,10 +41,22 @@ def index_1():
 	 username = session.get("username")
 	 if username:
 	 	return redirect(f"/home/profile/{username}")
+	 time_2 = []
 	 for id in data["articles"]:
-	 		id["views"] = sum([i[2] if i[2] is not None else 0 for i in read_record("user.db", "views") if id["publishedAt"] == i[1]])		 			
+	 	if isinstance(id, dict):  # Check if id is a dictionary
+	 		id["views"] = sum([i[2] if i[2] is not None else 0 for i in read_record("user.db", "views") if id["publishedAt"] == i[1]])
+	 		time_2.append(int(''.join(id["publishedAt"].split('T')[0].split('-'))))
+	 	else:
+	 		print(f"Unexpected data format:")
+	 time_4 = []
+	 for i in range(0,len(time_2)):
+	 	time_4.append(str(np.argmax(time_2)))
+	 	time_2[np.argmax(time_2)] = 0
+	 data["articles"].append(time_4)
+	 	 					 			
 	 time = datetime.now().year
-	 return render_template('index.html',data=data["articles"],time = time)
+	 return render_template('index.html',data=data["articles"],time = time,time_4=time_4)
+
 
 
 @app.route('/sport')
@@ -97,16 +110,31 @@ def index_2_2_4():
       insert_view_record("user.db",table,data)
       return "hay"
              
-@app.route('/search/quary',methods=['GET'])
+@app.route('/search/quary', methods=['GET'])
 def index_3():
-     username = session.get("username")
-     quary = request.args.get("quary")
-     url = f"https://newsapi.org/v2/everything?q={quary}&apiKey=a26e90658ca8499ca068782aa2179116"
-     response = requests.get(url)
-     data_2 = response.json()
-     for id in data_2["articles"]:
-     	id["views"] = sum([i[2] if i[2] is not None else 0 for i in read_record("user.db", "views") if id["publishedAt"] == i[1]])	 
-     return render_template('index.html',data=data_2["articles"])
+    username = session.get("username")
+    quary = request.args.get("quary")
+    url = f"https://newsapi.org/v2/everything?q={quary}&apiKey=a26e90658ca8499ca068782aa2179116"
+    response = requests.get(url)
+    data_2 = response.json()
+
+    time_2 = []
+    for id in data_2["articles"]:
+        if isinstance(id, dict):  # Check if id is a dictionary
+            id["views"] = sum([i[2] if i[2] is not None else 0 for i in read_record("user.db", "views") if id["publishedAt"] == i[1]])
+            time_2.append(int(''.join(id["publishedAt"].split('T')[0].split('-'))))
+        else:
+            print(f"Unexpected data format: {id}")
+
+    time_4 = []
+    for i in range(0, len(time_2)):
+        time_4.append(str(np.argmax(time_2)))
+        time_2[np.argmax(time_2)] = 0
+
+    data_2["articles"].append(time_4)
+
+    return render_template('index.html', data=data_2["articles"])
+
      
 @app.route('/signup')
 def index_5():
@@ -410,4 +438,4 @@ def table_exists(database_name, table_name):
         return 'NO'
 									
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000)
+    app.run(debug=True)
