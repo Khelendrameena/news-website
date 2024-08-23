@@ -12,6 +12,7 @@
 *{
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
@@ -220,7 +221,7 @@ div_data.innerHTML = `<a href="${data[x].url}"><div class="h-full border-2 borde
                   </svg>
                 </span>
               </div>
-   <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">${data[x].publishedAt}</h2><form action="${data[x].comment_link}" id="coment_form_${x}" method="post"><input type="hidden" id="coment_id_${x}" name="coment_nu_id"><button type="submit"></button></form></div></div>`
+   <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">${data[x].publishedAt}</h2></div></div>`
 document.getElementById("data_main_1").append(div_data);
 document.getElementById(`coment_main_${x}`).addEventListener('click',function(){
   document.getElementById(`coment_id_${x}`).value = data[x].publishedAt;
@@ -265,7 +266,7 @@ if("view" in data[x]){
       data[x].view = 1;
 }
 else{
-data[x].view = 0
+data[x].view = 0;
 }
 
       xhr.send(JSON.stringify([data[x].publishedAt, data[x].view]));
