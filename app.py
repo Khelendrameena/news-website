@@ -65,7 +65,7 @@ def index_1():
 
 
 @app.route('/news', methods=['GET'])
-def index_3():
+def index_3_2():
     username = session.get("username")
     quary = 'news'
     url = f"https://newsapi.org/v2/everything?q={quary}&apiKey=a26e90658ca8499ca068782aa2179116"
@@ -91,7 +91,7 @@ def index_3():
 
 	 	 
 @app.route('/sport', methods=['GET'])
-def index_3():
+def index_3_4():
     username = session.get("username")
     quary = 'sport'
     url = f"https://newsapi.org/v2/everything?q={quary}&apiKey=a26e90658ca8499ca068782aa2179116"
@@ -117,7 +117,7 @@ def index_3():
 	 
 
 @app.route('/india', methods=['GET'])
-def index_3():
+def index_3_6():
     username = session.get("username")
     quary = 'india'
     url = f"https://newsapi.org/v2/everything?q={quary}&apiKey=a26e90658ca8499ca068782aa2179116"
