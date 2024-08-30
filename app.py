@@ -27,7 +27,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 articles = [];
-topic = ["google"]
+topic = ["Best news"]
 for i in range(0,len(topic)):
     url = f"https://newsapi.org/v2/everything?q={topic[i]}&apiKey=a26e90658ca8499ca068782aa2179116"
     response = requests.get(url)
