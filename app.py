@@ -73,18 +73,18 @@ def index_1_4():
 	 data_2 = response.json()
 	 for id in data_2["articles"]:
 	 		id["views"] = sum([ i[2] for i in read_record("user.db","views") if id["publishedAt"] == i[1]])		 
-	 return render_template('index.html',data=data_2["articles"])
+	 return render_template('index_4.html',data=data_2["articles"])
 	 	 
 @app.route('/india')
 def index_11():
 	 username = session.get("username")
-	 quary = 'sport'
+	 quary = 'india'
 	 url = f"https://newsapi.org/v2/everything?q={quary}&apiKey=a26e90658ca8499ca068782aa2179116"
 	 response = requests.get(url)
 	 data_2 = response.json()
 	 for id in data_2["articles"]:
 	 		id["views"] = sum([ i[2] for i in read_record("user.db","views") if id["publishedAt"] == i[1]])		 
-	 return render_template('index.html',data=data_2["articles"])	 
+	 return render_template('index_4.html',data=data_2["articles"])	 
 
 @app.route('/news')
 def index_12():
@@ -95,7 +95,7 @@ def index_12():
 	 data_2 = response.json()
 	 for id in data_2["articles"]:
 	 		id["views"] = sum([ i[2] for i in read_record("user.db","views") if id["publishedAt"] == i[1]])		 
-	 return render_template('index.html',data=data_2["articles"])	 
+	 return render_template('index_4.html',data=data_2["articles"])	 
 	 	 	 		 		 	 		 	
 @app.route('/search')
 def index_2():
