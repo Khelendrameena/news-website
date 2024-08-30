@@ -188,7 +188,7 @@ def index_5_2():
 	 message['From'] = sender_email
 	 message['To'] = email
 	 message['Subject'] = 'Subject of the Email'
-	 body = f'your vrification link is http://127.0.0.1:5000/signup/auth/{un_link_id} '
+	 body = f'your vrification link is https://newsflow-jmsx.onrender.com//signup/auth/{un_link_id} '
 	 message.attach(MIMEText(body, 'plain'))
 	 server = smtplib.SMTP(smtp_server, smtp_port)
 	 server.starttls() 
