@@ -26,13 +26,16 @@ app.config["SESSION_PERMANENT"] = False
 
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+articles = [];
+topic = ["news","india"]
+for i in range(0,len(topic)):
+    url = f"https://newsapi.org/v2/everything?q={topic[i]}&apiKey=a26e90658ca8499ca068782aa2179116"
+    response = requests.get(url)
+    data = response.json()
+    articles.extend(data["articles"])
+    
 
-	
-quary = "jee"
-url = f"https://newsapi.org/v2/everything?q={quary}&apiKey=a26e90658ca8499ca068782aa2179116"
-response = requests.get(url)
 id_array = []
-data = response.json()
 main = ["hay","hello"]
 views_array = []
 
@@ -40,22 +43,24 @@ views_array = []
 def index_1():
 	 username = session.get("username")
 	 if username:
-	 	return redirect(f"/home/profile/{username}")
+	   	 	return redirect(f"/home/profile/{username}")
+
 	 time_2 = []
-	 for id in data["articles"]:
+	 for id in articles:
 	 	if isinstance(id, dict):  # Check if id is a dictionary
 	 		id["views"] = sum([i[2] if i[2] is not None else 0 for i in read_record("user.db", "views") if id["publishedAt"] == i[1]])
 	 		time_2.append(int(''.join(id["publishedAt"].split('T')[0].split('-'))))
 	 	else:
 	 		print(f"Unexpected data format:")
 	 time_4 = []
+
 	 for i in range(0,len(time_2)):
 	 	time_4.append(str(np.argmax(time_2)))
 	 	time_2[np.argmax(time_2)] = 0
-	 data["articles"].append(time_4)
+	 articles.append(time_4)
 	 	 					 			
 	 time = datetime.now().year
-	 return render_template('index.html',data=data["articles"],time = time,time_4=time_4)
+	 return render_template('index.html',data=articles,time = time,time_4=time_4)
 
 
 
@@ -96,7 +101,7 @@ def index_12():
 def index_2():
     sug_data = []
     for i in range(0,10):
-    	data_1 = data["articles"][i]
+    	data_1 = articles[i]
     	sug_data.append(data_1["title"])
    # for id in data_2["articles"]:
     	#id["views"] = sum([ i[2] for i in read_record("user.db","views") if id["publishedAt"] == i[1]])		 
@@ -234,7 +239,7 @@ def index_8():
 @app.route('/home/profile/<username>')
 def index_2_2(username):
 	username = session.get("username")
-	return render_template('index_4.html',data=data["articles"],link=f'/profile/{username}')
+	return render_template('index_4.html',data=articles,link=f'/profile/{username}')
 
 @app.route('/profile/<username>')
 def upload_file(username):
@@ -437,4 +442,3 @@ def table_exists(database_name, table_name):
     else:
         return 'NO'
 									
-
