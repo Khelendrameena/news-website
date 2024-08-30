@@ -222,7 +222,7 @@ div_data.innerHTML = `<a href="${data[parseInt([data[data.length-1][x]])].url}">
                   </svg>
                 </span>
               </div>
-   <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">${data[parseInt([data[data.length-1][x]])].publishedAt}</h2></div></div>`
+   <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">${data[parseInt([data[data.length-1][x]])].publishedAt.split('T')[0]}</h2></div></div>`
 document.getElementById("data_main_1").append(div_data);
 document.getElementById(`coment_main_${x}`).addEventListener('click',function(){
   document.getElementById(`coment_id_${x}`).value = data[parseInt([data[data.length-1][x]])].publishedAt;
