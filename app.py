@@ -64,38 +64,83 @@ def index_1():
 
 
 
-@app.route('/sport')
-def index_1_4():
-	 username = session.get("username")
-	 quary = 'sport'
-	 url = f"https://newsapi.org/v2/everything?q={quary}&apiKey=a26e90658ca8499ca068782aa2179116"
-	 response = requests.get(url)
-	 data_2 = response.json()
-	 for id in data_2["articles"]:
-	 		id["views"] = sum([ i[2] for i in read_record("user.db","views") if id["publishedAt"] == i[1]])		 
-	 return render_template('index_4.html',data=data_2["articles"])
-	 	 
-@app.route('/india')
-def index_11():
-	 username = session.get("username")
-	 quary = 'india'
-	 url = f"https://newsapi.org/v2/everything?q={quary}&apiKey=a26e90658ca8499ca068782aa2179116"
-	 response = requests.get(url)
-	 data_2 = response.json()
-	 for id in data_2["articles"]:
-	 		id["views"] = sum([ i[2] for i in read_record("user.db","views") if id["publishedAt"] == i[1]])		 
-	 return render_template('index_4.html',data=data_2["articles"])	 
+@app.route('/news', methods=['GET'])
+def index_3():
+    username = session.get("username")
+    quary = 'news'
+    url = f"https://newsapi.org/v2/everything?q={quary}&apiKey=a26e90658ca8499ca068782aa2179116"
+    response = requests.get(url)
+    data_2 = response.json()
 
-@app.route('/news')
-def index_12():
-	 username = session.get("username")
-	 quary = 'news'
-	 url = f"https://newsapi.org/v2/everything?q={quary}&apiKey=a26e90658ca8499ca068782aa2179116"
-	 response = requests.get(url)
-	 data_2 = response.json()
-	 for id in data_2["articles"]:
-	 		id["views"] = sum([ i[2] for i in read_record("user.db","views") if id["publishedAt"] == i[1]])		 
-	 return render_template('index_4.html',data=data_2["articles"])	 
+    time_2 = []
+    for id in data_2["articles"]:
+        if isinstance(id, dict):  # Check if id is a dictionary
+            id["views"] = sum([i[2] if i[2] is not None else 0 for i in read_record("user.db", "views") if id["publishedAt"] == i[1]])
+            time_2.append(int(''.join(id["publishedAt"].split('T')[0].split('-'))))
+        else:
+            print(f"Unexpected data format: {id}")
+
+    time_4 = []
+    for i in range(0, len(time_2)):
+        time_4.append(str(np.argmax(time_2)))
+        time_2[np.argmax(time_2)] = 0
+
+    data_2["articles"].append(time_4)
+
+    return render_template('index.html', data=data_2["articles"])
+
+	 	 
+@app.route('/sport', methods=['GET'])
+def index_3():
+    username = session.get("username")
+    quary = 'sport'
+    url = f"https://newsapi.org/v2/everything?q={quary}&apiKey=a26e90658ca8499ca068782aa2179116"
+    response = requests.get(url)
+    data_2 = response.json()
+
+    time_2 = []
+    for id in data_2["articles"]:
+        if isinstance(id, dict):  # Check if id is a dictionary
+            id["views"] = sum([i[2] if i[2] is not None else 0 for i in read_record("user.db", "views") if id["publishedAt"] == i[1]])
+            time_2.append(int(''.join(id["publishedAt"].split('T')[0].split('-'))))
+        else:
+            print(f"Unexpected data format: {id}")
+
+    time_4 = []
+    for i in range(0, len(time_2)):
+        time_4.append(str(np.argmax(time_2)))
+        time_2[np.argmax(time_2)] = 0
+
+    data_2["articles"].append(time_4)
+
+    return render_template('index.html', data=data_2["articles"])
+	 
+
+@app.route('/india', methods=['GET'])
+def index_3():
+    username = session.get("username")
+    quary = 'india'
+    url = f"https://newsapi.org/v2/everything?q={quary}&apiKey=a26e90658ca8499ca068782aa2179116"
+    response = requests.get(url)
+    data_2 = response.json()
+
+    time_2 = []
+    for id in data_2["articles"]:
+        if isinstance(id, dict):  # Check if id is a dictionary
+            id["views"] = sum([i[2] if i[2] is not None else 0 for i in read_record("user.db", "views") if id["publishedAt"] == i[1]])
+            time_2.append(int(''.join(id["publishedAt"].split('T')[0].split('-'))))
+        else:
+            print(f"Unexpected data format: {id}")
+
+    time_4 = []
+    for i in range(0, len(time_2)):
+        time_4.append(str(np.argmax(time_2)))
+        time_2[np.argmax(time_2)] = 0
+
+    data_2["articles"].append(time_4)
+
+    return render_template('index.html', data=data_2["articles"])
+
 	 	 	 		 		 	 		 	
 @app.route('/search')
 def index_2():
