@@ -239,7 +239,7 @@ def index_8():
 @app.route('/home/profile/<username>')
 def index_2_2(username):
 	username = session.get("username")
-	return render_template('index_4.html',data=articles,link=f'/profile/{username}')
+	return render_template('index.html',data=articles,link=f'/profile/{username}')
 
 @app.route('/profile/<username>')
 def upload_file(username):
