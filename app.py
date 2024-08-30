@@ -227,8 +227,8 @@ def index_5_2():
 	 auth_link.append(un_link_id)
 	 smtp_server = 'smtp.gmail.com'
 	 smtp_port = 587
-	 sender_email = 'khelendra1112@gmail.com'
-	 password = 'pwys ohtn murd xngy'
+	 sender_email = ''
+	 password = ''
 	 message = MIMEMultipart()
 	 message['From'] = sender_email
 	 message['To'] = email
